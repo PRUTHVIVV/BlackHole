@@ -110,7 +110,7 @@ Feel free to create an issue or submit a pull request.
 
 ## 👨‍💻 Author
 
-**Your Name**  
+**Pruthvi Velani**  
 *Internship Presentation - Phoenix Team*
 
 Built to answer the question: 
