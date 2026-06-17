@@ -1,0 +1,395 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root {
+  --font-main: 'VT323', monospace;
+  --theme-red: #E51D34;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Canvas handles scroll */
+  background-color: #000;
+  font-family: var(--font-main);
+  color: #fff;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.glass-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 30vh; /* Massive 30vh gap guarantees slides will never visually overlap */
+  padding: 10vh 0; /* Add padding so the first and last slides have breathing room */
+}
+
+.slide {
+  width: 100vw;
+  min-height: 100vh; /* Allow slide to grow if content is huge */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 10vw;
+  
+  /* CSS Scroll Snapping properties */
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.slide.right-align {
+  justify-content: flex-end;
+}
+
+.slide.center-align {
+  justify-content: center;
+  text-align: center;
+}
+
+/* The Glass Card Effect */
+.glass-card {
+  background: rgba(0, 0, 0, 0.65); /* Darker tint to block bright lights */
+  backdrop-filter: blur(24px); /* Stronger blur to smear the bright accretion disk */
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 3rem;
+  border-radius: 16px;
+  max-width: 900px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(229, 29, 52, 0.2);
+  
+  /* Entrance animation handled by standard CSS */
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(229, 29, 52, 0.5);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(229, 29, 52, 0.3);
+}
+
+.badge {
+  display: inline-block;
+  background: var(--theme-red);
+  color: #fff;
+  padding: 0.25rem 1rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  border-radius: 50px;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 10px rgba(229, 29, 52, 0.5);
+}
+
+.glass-card h1 {
+  font-size: 5.5rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #fff, #aaa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8)); /* Black outline effect for readability */
+}
+
+.glass-card h2 {
+  font-size: 3rem;
+  font-weight: 400;
+  color: #ddd;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 8px rgba(0,0,0,0.8);
+}
+
+/* Team Phoenix Modal Styles */
+.team-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.team-modal-content {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(229, 29, 52, 0.5);
+  box-shadow: 0 0 50px rgba(229, 29, 52, 0.2);
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 900px;
+  text-align: center;
+  position: relative;
+}
+
+.close-btn-top-right {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-main);
+  padding: 0;
+  line-height: 1;
+}
+
+.close-btn-top-right:hover {
+  color: var(--theme-red);
+  transform: scale(1.2);
+  text-shadow: 0 0 10px rgba(229, 29, 52, 0.8);
+}
+
+.phoenix-title {
+  font-size: 4.5rem;
+  color: #fff;
+  text-shadow: 0 0 20px var(--theme-red);
+  margin-bottom: 0.5rem;
+}
+
+.phoenix-subtitle {
+  font-size: 2rem;
+  color: #ccc;
+  margin-bottom: 2rem;
+}
+
+.team-photo {
+  max-width: 100%;
+  max-height: 50vh;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+.close-btn {
+  background: var(--theme-red);
+  color: #fff;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.8rem;
+  font-weight: 400;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-main);
+}
+
+.close-btn:hover {
+  background: #ff2a46;
+  box-shadow: 0 0 20px rgba(229, 29, 52, 0.6);
+  transform: translateY(-2px);
+}
+
+.glass-card p,
+.glass-card ul li {
+  position: relative;
+  font-size: 2.2rem;
+  line-height: 1.4;
+  
+  /* Glitter Glow implementation: dynamic radial gradient tracking the mouse */
+  background: radial-gradient(
+    circle 400px at var(--mouse-x, -500px) var(--mouse-y, -500px), 
+    #ffee58 0%,     /* Bright pale gold center */
+    #ffca28 40%,    /* Rich golden glitter */
+    #e0e0e0 80%     /* Bright silver default state */
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #fff; /* Fallback */
+  
+  /* Strong golden glow by default */
+  filter: drop-shadow(0 0 8px rgba(255, 202, 40, 0.5));
+  transition: filter 0.3s ease;
+}
+
+.glass-card p {
+  margin-bottom: 1rem;
+}
+
+.glass-card p:hover,
+.glass-card ul li:hover {
+  /* Intensify the glow when the mouse is physically over the text */
+  filter: drop-shadow(0 0 20px rgba(255, 202, 40, 1));
+}
+
+.glass-card p strong {
+  -webkit-text-fill-color: #fff;
+  font-weight: 400;
+}
+
+.glass-card ul {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+.glass-card ul li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.glass-card ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  -webkit-text-fill-color: var(--theme-red); /* Keep arrow solid red despite text clipping */
+  color: var(--theme-red);
+  font-weight: bold;
+}
+
+/* --------------------------------------------------------
+   TECH STACK MODAL OVERLAY (EASTER EGG)
+-------------------------------------------------------- */
+.tech-stack-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4); /* Darker backdrop to hide the empty space */
+  pointer-events: all;
+}
+
+.tech-stack-card {
+  width: 60vw;
+  max-width: 900px;
+  background: rgba(10, 15, 25, 0.85);
+  border: 1px solid rgba(255, 42, 70, 0.3);
+  box-shadow: 0 0 50px rgba(255, 42, 70, 0.1);
+}
+
+.tech-stack-card ul li::before {
+  content: '⚡'; /* Use a lightning bolt instead of an arrow for the tech stack */
+  -webkit-text-fill-color: #ff2a46;
+  font-size: 1.5rem;
+}
+
+/* Entrance animation */
+@keyframes fadeInUpWarp {
+  from {
+    opacity: 0;
+    transform: translateY(100px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fadeInUp {
+  animation: fadeInUpWarp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --------------------------------------------------------
+   TESTIQO IMAGE CAROUSEL & ASTEROID FLASH
+-------------------------------------------------------- */
+.screen-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-out;
+}
+
+.screen-flash.active {
+  opacity: 1;
+  transition: none; /* Instant flash to white */
+}
+
+.testiqo-carousel-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.85); /* Very dark background to focus on images */
+}
+
+.carousel-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.carousel-img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 0 40px rgba(255, 42, 70, 0.3);
+  border: 1px solid rgba(255, 42, 70, 0.5);
+}
+
+.carousel-controls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+  color: white;
+  font-family: var(--font-main);
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.arrow-hint {
+  color: #ff2a46;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: pulseHint 2s infinite;
+}
+
+.arrow-hint.down {
+  color: #00b4d8;
+}
+
+@keyframes pulseHint {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; text-shadow: 0 0 10px rgba(255,42,70,0.8); }
+  100% { opacity: 0.5; }
+}
